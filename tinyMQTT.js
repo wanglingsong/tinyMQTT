@@ -14,6 +14,7 @@ var TMQ = function(server, optns){
 	this.pwd = opts.password;
 	this.cn = false;
 	this.ri = opts.reconnect_interval || 2000;
+	this.ci = opts.client_id || getSerial();
 	_q = this;
 };
 
@@ -59,7 +60,7 @@ function mqCon(id){
 TMQ.prototype.connect = function(){
 	var onConnected = function() {
 		clearInterval(con);
-		_q.cl.write(mqCon(getSerial()));
+		_q.cl.write(mqCon(_q.ci));
 		_q.emit("connected");
 		_q.cn = true;
 		setInterval(function(){
