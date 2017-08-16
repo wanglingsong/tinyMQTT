@@ -15,6 +15,7 @@ var TMQ = function(server, optns){
 	this.cn = false;
 	this.ri = opts.reconnect_interval || 2000;
 	this.ci = opts.client_id || getSerial();
+	this.cs = opts.clean_session || true;
 	_q = this;
 };
 
@@ -48,7 +49,8 @@ function mqCon(id){
 		flags |= ( _q.usr )? 0x80 : 0; 
 		flags |= ( _q.usr && _q.pwd )? 0x40 : 0; 
 		payload += mqStr(_q.usr) + mqStr(_q.pwd);
-	} 
+	}
+	flags |= (_q.cs) ? 0x2 : 0;
 	flags = sFCC(parseInt(flags.toString(16), 16));
 	return mqPkt(0b00010000, 
 		mqStr("MQTT")/*protocol name*/+
