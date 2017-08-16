@@ -50,13 +50,13 @@ function mqCon(id){
 		flags |= ( _q.usr && _q.pwd )? 0x40 : 0; 
 		payload += mqStr(_q.usr) + mqStr(_q.pwd);
 	}
-	flags |= (_q.cs) ? 0x2 : 0;
+	flags |= (_q.cs) ? 0x02 : 0;
 	flags = sFCC(parseInt(flags.toString(16), 16));
 	return mqPkt(0b00010000, 
 		mqStr("MQTT")/*protocol name*/+
 		"\x04"/*protocol level*/+
 		flags/*flags*/+
-		"\xFF\xFF"/*Keepalive*/, payload);
+		"\x00\x78"/* TODO Keepalive*/, payload);
 };
 
 TMQ.prototype.connect = function(){
